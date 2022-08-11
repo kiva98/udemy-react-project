@@ -7,7 +7,7 @@ import "./App.css";
 
 const App = () => {
   const [searchField, setSearchField] = useState("");
-  const [filteredRobots, setFilteredRobots] = useState([]);
+
   const [robots, setRobots] = useState([]);
 
   const onSearchChange = (e) => {
@@ -22,24 +22,18 @@ const App = () => {
       .then((actualData) => setRobots(actualData))
       .catch((err) => console.log(err.message));
     console.log("called fetch");
-    setFilteredRobots(robots);
   }, []);
 
-  useEffect(() => {
-    console.log(filteredRobots);
-    const newRobots = robots.filter((robot) =>
-      robot.name.toLowerCase().includes(searchField.toLowerCase())
-    );
-    setFilteredRobots(newRobots);
-    console.log(filteredRobots);
-  }, [robots, searchField]);
+  const newRobots = robots.filter((robot) =>
+    robot.name.toLowerCase().includes(searchField.toLowerCase())
+  );
 
   return (
     <div className="tc">
       <h1>RoboFriends</h1>
       <SearchBox searchChange={onSearchChange} />
       <Scroll>
-        <Cards robots={filteredRobots} />
+        <Cards robots={newRobots} />
       </Scroll>
     </div>
   );
